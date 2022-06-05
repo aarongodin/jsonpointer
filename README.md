@@ -24,6 +24,7 @@ Create new pointer instances by calling the `#from` method using a source string
 
 ```crystal
 require "jsonpointer"
+require "json"
 
 input = JSON.parse(
   <<-JSON
@@ -40,7 +41,7 @@ input = JSON.parse(
 )
 
 pointer = JSONPointer.from("/root/child/2/name")
-pointer.get?(input) # => "third"
+pointer.get?(input) # => "third" (as JSON::Any)
 ```
 
 The accessor returned from `JSONPointer#from` has both `#get` and `#get?` methods. The `#get` raises an error when a value is not found in the input JSON, while `#get?` returns `nil`.
@@ -52,6 +53,32 @@ require "jsonpointer"
 
 pointer = JSONPointer.from("/root/child")
 pointer.source # => "/root/child"
+```
+
+### Escape sequences
+
+The escape sequence in JSON Pointer is using a `~` character.
+
+* `~0` => `~`
+* `~1` => `/`
+
+The tilde (`~`) and forward slash are the only two characters you can escape using the above sequences. Example:
+
+```crystal
+require "json"
+require "jsonpointer"
+
+input = JSON.parse(
+  <<-JSON
+  {
+    "~aaron": {
+      "id": "asdf1234"
+    }
+  }
+  JSON
+)
+
+JSONPointer.from("/~0aaron/id").get? input # => "asdf1234" (as JSON::Any)
 ```
 
 ## Contributing

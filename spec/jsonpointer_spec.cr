@@ -76,7 +76,7 @@ describe JSONPointer do
     JSONPointer.from("/c%d").get(input3).should eq(2)
     JSONPointer.from("/e^f").get(input3).should eq(3)
     JSONPointer.from("/g|h").get(input3).should eq(4)
-    JSONPointer.from("/k\'l").get(input3).should eq(5)
+    JSONPointer.from("/k'l").get(input3).should eq(5)
     JSONPointer.from("/ ").get(input3).should eq(6)
     JSONPointer.from("/m~0n").get(input3).should eq(7)
   end

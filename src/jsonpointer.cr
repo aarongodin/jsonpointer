@@ -6,7 +6,7 @@ module JSONPointer
     @subkeys : Array(String | Int32)
 
     def initialize(@source, @subkeys); end
-  
+
     def get(input : JSON::Any) : JSON::Any
       @subkeys.reduce(input) do |value, subkey|
         value.dig(subkey)
